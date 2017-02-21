@@ -4,9 +4,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-/**
- * Created by user on 20/2/17.
- */
 
 public class DBHelper extends SQLiteOpenHelper {
 
@@ -17,12 +14,13 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
+        db.execSQL(NewsDBContract.News.CREATE_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        db.execSQL(NewsDBContract.News.DROP_TABLE);
+        onCreate(db);
     }
 
     @Override

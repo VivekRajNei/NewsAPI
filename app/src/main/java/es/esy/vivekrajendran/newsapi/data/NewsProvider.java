@@ -3,23 +3,22 @@ package es.esy.vivekrajendran.newsapi.data;
 import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-
-/**
- * Created by user on 20/2/17.
- */
+import android.util.Log;
 
 public class NewsProvider extends ContentProvider {
 
     private DBHelper mDBHelper;
+    public static final String TAG = "TAG";
 
     static {
 
     }
 
-    private NewsProvider() {}
+    public NewsProvider() {}
 
     @Override
     public boolean onCreate() {
@@ -42,7 +41,13 @@ public class NewsProvider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
-        return null;
+        SQLiteDatabase mWritableDB = mDBHelper.getWritableDatabase();
+        long id = mWritableDB.insert(
+                NewsDBContract.News.TABLE_NAME,
+                null,
+                values);
+        Log.i(TAG, "insert: " + id);
+        return Uri.withAppendedPath(uri, String.valueOf(id));
     }
 
     @Override
