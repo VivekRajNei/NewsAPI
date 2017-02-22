@@ -28,7 +28,7 @@ public class NewsAsync extends AsyncTask<String, Void, Boolean> {
     protected Boolean doInBackground(String... params) {
         String jsonString = doNetworkOperation(params);
         NewsParser.getInstance(context).resolveJSON(jsonString);
-        return null;
+        return true;
     }
 
     @Override

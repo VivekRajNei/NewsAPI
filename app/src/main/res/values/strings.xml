@@ -7,9 +7,9 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_splash">SplashActivity</string>
     <string name="menu_logout">Logout</string>
-    
-    
+
+
     <!--Network data-->
     <string name="apikey">a65e2431ef9141ab93e78509b14554d0</string>
-    
+
 </resources>

@@ -27,25 +27,23 @@ public class NewsParser {
     }
 
     public Boolean resolveJSON(String json) {
-        Log.i(TAG, "resolveJSON: called + " + json);
         try {
             JSONObject rootElement = new JSONObject(json);
-            if (!("ok".equals(rootElement.getString("status")))) {
-                JSONArray sources = rootElement.getJSONArray("articles");
-                JSONObject itemObject;
+            //if (!("ok".equals(rootElement.getString("status")))) {   }
+            JSONArray sources = rootElement.getJSONArray("articles");
+            JSONObject itemObject;
 
-                Log.i(TAG, "resolveJSON: " + sources.length());
-                for (int i = 0; i < sources.length(); i++) {
-                    itemObject = sources.getJSONObject(i);
-                    ContentValues contentValues = new ContentValues();
-                    contentValues.put(NewsDBContract.News.COLUMN_AUTHOR, itemObject.getString("author"));
-                    contentValues.put(NewsDBContract.News.COLUMN_TITLE, itemObject.getString("title"));
-                    contentValues.put(NewsDBContract.News.COLUMN_DESCRIPTION, itemObject.getString("description"));
-                    contentValues.put(NewsDBContract.News.COLUMN_URL, itemObject.getString("url"));
-                    contentValues.put(NewsDBContract.News.COLUMN_URL_TO_IMAGE, itemObject.getString("urlToImage"));
-                    contentValues.put(NewsDBContract.News.COLUMN_PUBLISHED_AT, itemObject.getString("publishedAt"));
-                    storeOnDB(NewsDBContract.URI_NEWS, contentValues);
-                }
+            Log.i(TAG, "resolveJSON: " + sources.length());
+            for (int i = 0; i < sources.length(); i++) {
+                itemObject = sources.getJSONObject(i);
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(NewsDBContract.News.COLUMN_AUTHOR, itemObject.getString("author"));
+                contentValues.put(NewsDBContract.News.COLUMN_TITLE, itemObject.getString("title"));
+                contentValues.put(NewsDBContract.News.COLUMN_DESCRIPTION, itemObject.getString("description"));
+                contentValues.put(NewsDBContract.News.COLUMN_URL, itemObject.getString("url"));
+                contentValues.put(NewsDBContract.News.COLUMN_URL_TO_IMAGE, itemObject.getString("urlToImage"));
+                contentValues.put(NewsDBContract.News.COLUMN_PUBLISHED_AT, itemObject.getString("publishedAt"));
+                storeOnDB(NewsDBContract.URI_NEWS, contentValues);
             }
             return true;
         } catch (JSONException e) {
