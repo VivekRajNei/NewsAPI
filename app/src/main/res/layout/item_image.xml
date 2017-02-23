@@ -27,6 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="TextView"
+            android:fontFamily="sans-serif-medium"
             android:layout_marginRight="0dp"
             app:layout_constraintRight_toRightOf="parent"
             android:layout_marginLeft="0dp"

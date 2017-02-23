@@ -4,10 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-
-/**
- * Created by user on 20/2/17.
- */
+import android.util.Log;
 
 public class UserPref {
 
@@ -23,4 +20,20 @@ public class UserPref {
         return new UserPref(context);
     }
 
+    public boolean isJStringAvailable() {
+        //returns TRUE if JString is not null
+        boolean availbilty = mSharedPreferences.getString(PrefContract.Json.JSTRING, null) != null;
+        Log.i("TAG", "isJStringAvailable: " + availbilty);
+        return availbilty;
+    }
+
+    public String getJString() {
+        return mSharedPreferences.getString(PrefContract.Json.JSTRING, null);
+    }
+
+    public void setJString(String jString) {
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.putString(PrefContract.Json.JSTRING, jString);
+        editor.apply();
+    }
 }

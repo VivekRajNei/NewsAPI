@@ -10,7 +10,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import es.esy.vivekrajendran.newsapi.data.NewsDBContract;
+import es.esy.vivekrajendran.newsapi.data.NewsContract;
 
 public class NewsParser {
 
@@ -37,13 +37,13 @@ public class NewsParser {
             for (int i = 0; i < sources.length(); i++) {
                 itemObject = sources.getJSONObject(i);
                 ContentValues contentValues = new ContentValues();
-                contentValues.put(NewsDBContract.News.COLUMN_AUTHOR, itemObject.getString("author"));
-                contentValues.put(NewsDBContract.News.COLUMN_TITLE, itemObject.getString("title"));
-                contentValues.put(NewsDBContract.News.COLUMN_DESCRIPTION, itemObject.getString("description"));
-                contentValues.put(NewsDBContract.News.COLUMN_URL, itemObject.getString("url"));
-                contentValues.put(NewsDBContract.News.COLUMN_URL_TO_IMAGE, itemObject.getString("urlToImage"));
-                contentValues.put(NewsDBContract.News.COLUMN_PUBLISHED_AT, itemObject.getString("publishedAt"));
-                storeOnDB(NewsDBContract.URI_NEWS, contentValues);
+                contentValues.put(NewsContract.News.COLUMN_AUTHOR, itemObject.getString("author"));
+                contentValues.put(NewsContract.News.COLUMN_TITLE, itemObject.getString("title"));
+                contentValues.put(NewsContract.News.COLUMN_DESCRIPTION, itemObject.getString("description"));
+                contentValues.put(NewsContract.News.COLUMN_URL, itemObject.getString("url"));
+                contentValues.put(NewsContract.News.COLUMN_URL_TO_IMAGE, itemObject.getString("urlToImage"));
+                contentValues.put(NewsContract.News.COLUMN_PUBLISHED_AT, itemObject.getString("publishedAt"));
+                storeOnDB(NewsContract.URI_NEWS, contentValues);
             }
             return true;
         } catch (JSONException e) {

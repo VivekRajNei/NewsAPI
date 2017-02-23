@@ -4,7 +4,6 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,6 +50,5 @@ public class DevDialog extends DialogFragment {
                 .centerCrop()
                 .placeholder(R.drawable.ic_account_circle_black_24px)
                 .into(profilePic);
-
     }
 }

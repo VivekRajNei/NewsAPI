@@ -11,7 +11,6 @@
     android:layout_marginBottom="4dp"
     app:cardCornerRadius="5dp">
 
-
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -35,6 +34,8 @@
             android:layout_marginTop="10dp"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
+            android:fontFamily="sans-serif-medium"
+            android:textAppearance="?android:textAppearanceMedium"
             app:layout_constraintTop_toBottomOf="@+id/img_item_news_main"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -62,9 +63,11 @@
             app:layout_constraintRight_toLeftOf="@+id/imgbtn_item_news_addtofav"
             android:layout_marginRight="8dp"
             android:layout_marginTop="0dp"
+            android:fontFamily="sans-serif-medium"
             app:layout_constraintTop_toBottomOf="@+id/tv_item_news_timepublished"
             app:layout_constraintLeft_toRightOf="@+id/img_item_news_provider"
             android:layout_marginLeft="8dp"
+            android:textAppearance="?android:textAppearanceSmall"
             app:layout_constraintVertical_bias="0.666" />
 
         <TextView
@@ -75,11 +78,13 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="0dp"
             android:text="TextView"
+            android:fontFamily="sans-serif-medium"
             app:layout_constraintTop_toTopOf="@+id/img_item_news_provider"
             app:layout_constraintRight_toLeftOf="@+id/imgbtn_item_news_addtofav"
             android:layout_marginRight="8dp"
             app:layout_constraintLeft_toRightOf="@+id/img_item_news_provider"
             android:layout_marginLeft="8dp"
+            android:textAppearance="?android:textAppearanceSmall"
             app:layout_constraintHorizontal_bias="0.5" />
 
         <ImageButton

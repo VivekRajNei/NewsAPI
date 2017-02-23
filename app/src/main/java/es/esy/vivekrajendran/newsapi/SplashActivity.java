@@ -27,10 +27,6 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void initListener() {
-        if (getIntent().getBooleanExtra("show_image", false)) {
-            //getWindow().
-        }
-
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {

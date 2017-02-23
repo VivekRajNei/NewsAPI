@@ -2,10 +2,6 @@ package es.esy.vivekrajendran.newsapi.util;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,21 +12,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import es.esy.vivekrajendran.newsapi.R;
-import es.esy.vivekrajendran.newsapi.data.NewsDBContract;
+import es.esy.vivekrajendran.newsapi.data.NewsContract;
 
 
-public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
+public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.NewsHolder> {
 
 
     private Context context;
     private Cursor cursor;
 
-    public NewsAdapter(Context context, Cursor cursor) {
+    public RecyclerAdapter(Context context, Cursor cursor) {
         this.context = context;
         this.cursor = cursor;
         /*CursorLoader mCursorLoader = new CursorLoader(
                 context,
-                NewsDBContract.URI_NEWS,
+                NewsContract.URI_NEWS,
                 null,
                 null,
                 null,
@@ -43,18 +39,18 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
     public NewsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context)
                 .inflate(R.layout.item_news_heading, parent, false);
-        return new NewsAdapter.NewsHolder(view);
+        return new RecyclerAdapter.NewsHolder(view);
     }
 
     @Override
     public void onBindViewHolder(NewsHolder holder, int position) {
         cursor.move(position);
         holder.headline.setText(cursor.getString(
-                cursor.getColumnIndexOrThrow(NewsDBContract.News.COLUMN_TITLE)));
+                cursor.getColumnIndexOrThrow(NewsContract.News.COLUMN_TITLE)));
         holder.newsProviderName.setText(
-                cursor.getColumnIndexOrThrow(NewsDBContract.News.COLUMN_AUTHOR));
+                cursor.getColumnIndexOrThrow(NewsContract.News.COLUMN_AUTHOR));
         holder.newsPublished.setText(
-                cursor.getColumnIndexOrThrow(NewsDBContract.News.COLUMN_PUBLISHED_AT));
+                cursor.getColumnIndexOrThrow(NewsContract.News.COLUMN_PUBLISHED_AT));
 
         /*holder.headline.setText("Headline");
         holder.newsImage.setImageResource(R.drawable.com_facebook_auth_dialog_background);

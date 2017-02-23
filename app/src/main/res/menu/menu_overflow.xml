@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_overflow_hide"
+        android:icon="@drawable/frame"
+        app:showAsAction="never"
+        android:title="Hide"/>
+    <item
+        android:id="@+id/menu_overflow_fewer"
+        android:icon="@drawable/frame"
+        app:showAsAction="never"
+        android:title="Hide"/>
+    <item
+        android:id="@+id/menu_overflow_goto_provider"
+        android:icon="@drawable/frame"
+        app:showAsAction="never"
+        android:title="Hide"/>
+    <item
+        android:id="@+id/menu_overflow_hide_goto_top"
+        android:icon="@drawable/frame"
+        app:showAsAction="never"
+        android:title="Hide"/>
+</menu>

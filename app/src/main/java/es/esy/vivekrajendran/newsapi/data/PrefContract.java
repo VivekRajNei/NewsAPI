@@ -13,4 +13,9 @@ public class PrefContract {
         public static final String USER_LOGGED_IN = "";
         public static final String USER_THEME = "";
     }
+
+    public final class Json {
+        public static final String PREF_NAME = "Json";
+        public static final String JSTRING = "jString";
+    }
 }
