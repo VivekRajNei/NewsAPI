@@ -26,7 +26,7 @@ public class WebviewActivity extends AppCompatActivity {
         }
     }
 
-    public class CustomChromeWebView extends WebViewClient {
+    private class CustomChromeWebView extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

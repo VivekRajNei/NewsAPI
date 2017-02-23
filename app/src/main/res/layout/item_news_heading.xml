@@ -5,6 +5,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
+    android:paddingEnd="4dp"
+    android:paddingStart="4dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
     app:cardCornerRadius="5dp">
 
 
@@ -51,29 +55,32 @@
 
         <TextView
             android:id="@+id/tv_item_news_providername"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Hello world welcome to newsAPI"
-            app:layout_constraintTop_toBottomOf="@+id/tv_item_news_timepublished"
-            app:layout_constraintLeft_toLeftOf="@+id/tv_item_news_timepublished"
-            app:layout_constraintRight_toRightOf="@+id/tv_item_news_timepublished"
-            app:layout_constraintHorizontal_bias="0.727"
             app:layout_constraintBottom_toBottomOf="@+id/img_item_news_provider"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintRight_toLeftOf="@+id/imgbtn_item_news_addtofav"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="0dp"
+            app:layout_constraintTop_toBottomOf="@+id/tv_item_news_timepublished"
+            app:layout_constraintLeft_toRightOf="@+id/img_item_news_provider"
+            android:layout_marginLeft="8dp"
+            app:layout_constraintVertical_bias="0.666" />
 
         <TextView
             android:id="@+id/tv_item_news_timepublished"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="0dp"
             android:text="TextView"
-            app:layout_constraintLeft_toRightOf="@+id/img_item_news_provider"
-            android:layout_marginLeft="16dp"
+            app:layout_constraintTop_toTopOf="@+id/img_item_news_provider"
             app:layout_constraintRight_toLeftOf="@+id/imgbtn_item_news_addtofav"
             android:layout_marginRight="8dp"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintTop_toTopOf="@+id/img_item_news_provider"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="8dp" />
+            app:layout_constraintLeft_toRightOf="@+id/img_item_news_provider"
+            android:layout_marginLeft="8dp"
+            app:layout_constraintHorizontal_bias="0.5" />
 
         <ImageButton
             android:id="@+id/imgbtn_item_news_addtofav"

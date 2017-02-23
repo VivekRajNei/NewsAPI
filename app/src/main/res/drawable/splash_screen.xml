@@ -10,8 +10,10 @@
             android:src="@mipmap/ic_launcher"/>
     </item>-->
     <item
-        android:height="512dp"
-        android:width="512dp">
-        <bitmap android:src="@drawable/news_icon"/>
+        android:gravity="center"
+        android:height="150dp"
+        android:width="150dp">
+        <bitmap android:src="@drawable/news_icon"
+            />
     </item>
 </layer-list>

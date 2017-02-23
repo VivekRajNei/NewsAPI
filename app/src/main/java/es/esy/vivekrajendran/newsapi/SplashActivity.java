@@ -19,7 +19,7 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
 
         mFirebaseAuth = FirebaseAuth.getInstance();
@@ -46,8 +46,7 @@ public class SplashActivity extends AppCompatActivity {
                             .createSignInIntentBuilder()
                             .setProviders(
                                     AuthUI.EMAIL_PROVIDER,
-                                    AuthUI.GOOGLE_PROVIDER,
-                                    AuthUI.FACEBOOK_PROVIDER)
+                                    AuthUI.GOOGLE_PROVIDER)
                             .setIsSmartLockEnabled(false)
                             .build(),
                             RC_SIGN_IN);

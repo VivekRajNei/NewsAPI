@@ -17,19 +17,27 @@
         <item
             android:id="@+id/nav_manage"
             android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+            android:title="Settings" />
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="More">
         <menu>
+            <item
+                android:id="@+id/nav_developer"
+                android:icon="@drawable/ic_account_circle_black_24px"
+                android:title="About developer" />
             <item
                 android:id="@+id/nav_share"
                 android:icon="@drawable/ic_menu_share"
                 android:title="Share" />
             <item
-                android:id="@+id/nav_send"
+                android:id="@+id/nav_feedback"
                 android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:title="Feedback" />
+            <item
+                android:icon="@drawable/ic_logout"
+                android:title="Logout"
+                android:id="@+id/nav_logout"/>
         </menu>
     </item>
 

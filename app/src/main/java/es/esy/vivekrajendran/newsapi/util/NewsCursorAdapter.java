@@ -2,6 +2,7 @@ package es.esy.vivekrajendran.newsapi.util;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,11 +57,15 @@ public class NewsCursorAdapter extends CursorAdapter {
         }
     }
 
+
+
     @Override
     public int getCount() {
         if (cursor == null) {
+            Log.i("TAG", "getCount: 0");
             return 0;
         }
+        Log.i("TAG", "getCount: " + cursor.getCount());
         return cursor.getCount();
     }
 }
