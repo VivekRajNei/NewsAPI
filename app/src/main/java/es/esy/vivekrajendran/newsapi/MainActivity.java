@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.ShareCompat;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v4.view.GravityCompat;
@@ -18,7 +21,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
@@ -26,7 +28,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import es.esy.vivekrajendran.newsapi.dialogs.DevDialog;
+import es.esy.vivekrajendran.newsapi.fragments.ImageFragment;
 import es.esy.vivekrajendran.newsapi.fragments.LatestNewsFragment;
+import es.esy.vivekrajendran.newsapi.fragments.ProviderFragment;
 import es.esy.vivekrajendran.newsapi.network.NewsAsync;
 
 public class MainActivity extends AppCompatActivity
@@ -52,6 +56,10 @@ public class MainActivity extends AppCompatActivity
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.main_frame, new LatestNewsFragment())
+                .commit();
     }
 
     @Override
@@ -70,26 +78,22 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         switch (id) {
-            case R.id.nav_camera:
-                break;
             case R.id.nav_gallery:
-                break;
-            case R.id.nav_slideshow:
                 new NewsAsync(getApplicationContext()).execute(" https://newsapi.org/v1/articles?source=the-next-web&sortBy=latest&apiKey=a65e2431ef9141ab93e78509b14554d0");
                 break;
-            case R.id.nav_manage:
+            case R.id.nav_settings:
                 break;
             case R.id.nav_developer:
-                android.app.FragmentManager fragmentManager = getFragmentManager();
-                android.app.FragmentTransaction fm_dev = fragmentManager.beginTransaction();
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fm_dev = fragmentManager.beginTransaction();
                 DevDialog dev = new DevDialog();
                 dev.setContext(getApplicationContext());
-                dev.show(fm_dev, "");
+                //dev.show(fm_dev, "dev");
                 break;
             case R.id.nav_share:
 //                ShareCompat.IntentBuilder.from(MainActivity.this)
 //                        .createChooserIntent()
-//                        .setAction()
+//                        .setData()
                 break;
             case R.id.nav_feedback:
                 Intent feedbackIntent = new Intent();
@@ -128,14 +132,14 @@ public class MainActivity extends AppCompatActivity
                             .centerCrop()
                             .placeholder(R.drawable.ic_account_circle_black_24px)
                             .into(new BitmapImageViewTarget(profPic) {
-                        @Override
-                        protected void setResource(Bitmap resource) {
-                            RoundedBitmapDrawable circularBitmapDrawable =
-                                    RoundedBitmapDrawableFactory.create(getApplicationContext().getResources(), resource);
-                            circularBitmapDrawable.setCircular(true);
-                            profPic.setImageDrawable(circularBitmapDrawable);
-                        }
-                    });
+                                @Override
+                                protected void setResource(Bitmap resource) {
+                                    RoundedBitmapDrawable circularBitmapDrawable =
+                                            RoundedBitmapDrawableFactory.create(getApplicationContext().getResources(), resource);
+                                    circularBitmapDrawable.setCircular(true);
+                                    profPic.setImageDrawable(circularBitmapDrawable);
+                                }
+                            });
                     name.setText(mUser.getDisplayName());
                     email.setText(mUser.getEmail());
                 }
@@ -166,16 +170,20 @@ public class MainActivity extends AppCompatActivity
 
     private void changeFrag(int id) {
         switch (id) {
-            case R.id.menu_bttmnav_1:
+            case R.id.menu_btmnav_latest:
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.main_frame, new LatestNewsFragment())
                         .commit();
                 break;
-            case R.id.menu_bttmnav_2:
-                Toast.makeText(MainActivity.this, "2", Toast.LENGTH_SHORT).show();
+            case R.id.menu_btmnav_provider:
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.main_frame, new ImageFragment())
+                        .commit();
                 break;
-            case R.id.menu_bttmnav_3:
-                Toast.makeText(MainActivity.this, "3", Toast.LENGTH_SHORT).show();
+            case R.id.menu_btmnav_starred:
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.main_frame, new ProviderFragment())
+                        .commit();
                 break;
         }
 

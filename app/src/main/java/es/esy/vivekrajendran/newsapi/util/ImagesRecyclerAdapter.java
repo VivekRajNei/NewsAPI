@@ -47,8 +47,8 @@ public class ImagesRecyclerAdapter extends RecyclerView.Adapter<ImagesRecyclerAd
 
         if (!TextUtils.isEmpty(feedItem.getImageUrl())) {
             Glide.with(context).load(feedItem.getImageUrl())
-                    .error(R.drawable.placeholder)
-                    .placeholder(R.drawable.placeholder)
+                    .error(R.drawable.ic_account_circle_black_24px)
+                    .placeholder(R.drawable.ic_account_circle_black_24px)
                     .into(holder.newsImage);
         }
 

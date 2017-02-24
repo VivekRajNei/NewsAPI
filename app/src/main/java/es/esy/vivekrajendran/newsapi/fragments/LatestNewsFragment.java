@@ -41,7 +41,7 @@ public class LatestNewsFragment extends Fragment implements LoaderManager.Loader
         View emptyView = view.findViewById(R.id.empty_view);
 
         latestNewsListView.setEmptyView(emptyView);
-        newsCursorAdapter = new NewsCursorAdapter(getContext(), null);
+        newsCursorAdapter = new NewsCursorAdapter(getActivity(), null);
         latestNewsListView.setAdapter(newsCursorAdapter);
 
         latestNewsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -50,9 +50,9 @@ public class LatestNewsFragment extends Fragment implements LoaderManager.Loader
                 Uri contentUri = ContentUris.withAppendedId(NewsContract.URI_BASE, position);
                 Toast.makeText(getContext(), "Clicked item id: " + position + " uri : " + contentUri.toString(),
                         Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getContext(), WebviewActivity.class);
+                /*Intent intent = new Intent(getContext(), WebviewActivity.class);
                 intent.setData(contentUri);
-                startActivity(intent);
+                startActivity(intent);*/
             }
         });
         getLoaderManager().initLoader(LATEST_NEWS_LOADER, null, this);

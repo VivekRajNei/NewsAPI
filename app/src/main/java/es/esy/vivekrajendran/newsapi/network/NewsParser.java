@@ -43,7 +43,7 @@ public class NewsParser {
                 contentValues.put(NewsContract.News.COLUMN_URL, itemObject.getString("url"));
                 contentValues.put(NewsContract.News.COLUMN_URL_TO_IMAGE, itemObject.getString("urlToImage"));
                 contentValues.put(NewsContract.News.COLUMN_PUBLISHED_AT, itemObject.getString("publishedAt"));
-                storeOnDB(NewsContract.URI_NEWS, contentValues);
+                storeOnDB(NewsContract.News.CONTENT_URI, contentValues);
             }
             return true;
         } catch (JSONException e) {

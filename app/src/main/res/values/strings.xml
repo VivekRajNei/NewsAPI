@@ -9,6 +9,16 @@
     <string name="menu_logout">Logout</string>
 
     <!--Network data-->
-    <string name="apikey">a65e2431ef9141ab93e78509b14554d0</string>
+    <string name="flickr_base_url">https://www.flickr.com/services/rest/?method=flickr.photosets.getPhotos</string>
+    <string name="format">format=json</string>
+    <string name="apikey">api_key=dc46acea0b58b015ef198913f32dc277</string>
+    <string name="photoset_id">photoset_id=72157660611130403</string>
+
+
+    <string name="latest_news">Lateset News</string>
+    <string name="starred">Starred</string>
+    <string name="providers">Providers</string>
+    <string name="empty_view_title_text">No Data found</string>
+    <string name="empty_view_subtitle_text">Make sure you have active internet connection</string>
 
 </resources>

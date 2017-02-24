@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -22,13 +21,11 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
 import es.esy.vivekrajendran.newsapi.R;
-import es.esy.vivekrajendran.newsapi.data.PrefContract;
 import es.esy.vivekrajendran.newsapi.data.UserPref;
 import es.esy.vivekrajendran.newsapi.model.ImageNews;
 import es.esy.vivekrajendran.newsapi.util.ImagesRecyclerAdapter;
@@ -59,14 +56,6 @@ public class ImageFragment extends Fragment {
         getData(url);
     }
 
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) getContext().getSystemService(CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-
-        if (networkInfo == null) return false;
-        NetworkInfo.State networkState = networkInfo.getState();
-        return (networkState == NetworkInfo.State.CONNECTED || networkState == NetworkInfo.State.CONNECTING);
-    }
 
     private class DownloadTask extends AsyncTask<String, Void, Integer> {
 
@@ -103,6 +92,7 @@ public class ImageFragment extends Fragment {
             }
             return result;
         }
+
         @Override
         protected void onPostExecute(Integer result) {
             setAdapter(result);
@@ -152,5 +142,12 @@ public class ImageFragment extends Fragment {
         }
     }
 
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getContext().getSystemService(CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
 
+        if (networkInfo == null) return false;
+        NetworkInfo.State networkState = networkInfo.getState();
+        return (networkState == NetworkInfo.State.CONNECTED || networkState == NetworkInfo.State.CONNECTING);
+    }
 }
