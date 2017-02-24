@@ -32,7 +32,8 @@
             android:authorities="es.esy.vivekrajendran.newsapi"
             android:exported="false" />
 
-        <activity android:name=".WebviewActivity"></activity>
+        <activity android:name=".WebviewActivity"
+            android:parentActivityName=".MainActivity" />
     </application>
 
 </manifest>
