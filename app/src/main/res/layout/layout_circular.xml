@@ -67,19 +67,23 @@
             <ImageView
                 android:layout_width="36dp"
                 android:layout_height="36dp"
-                android:layout_margin="12dp"/>
+                android:layout_margin="12dp"
+                android:background="?attr/selectableItemBackgroundBorderless"/>
             <ImageView
                 android:layout_width="36dp"
                 android:layout_height="36dp"
-                android:layout_margin="12dp"/>
+                android:layout_margin="12dp"
+                android:background="?attr/selectableItemBackgroundBorderless"/>
             <ImageView
                 android:layout_width="36dp"
                 android:layout_height="36dp"
-                android:layout_margin="12dp"/>
+                android:layout_margin="12dp"
+                android:background="?attr/selectableItemBackgroundBorderless"/>
             <ImageView
                 android:layout_width="36dp"
                 android:layout_height="36dp"
-                android:layout_margin="12dp"/>
+                android:layout_margin="12dp"
+                android:background="?attr/selectableItemBackgroundBorderless"/>
         </LinearLayout>
     </LinearLayout>
 </FrameLayout>

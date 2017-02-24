@@ -1,11 +1,14 @@
 package es.esy.vivekrajendran.newsapi;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -18,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -115,14 +119,23 @@ public class MainActivity extends AppCompatActivity
                     startActivity(intent);
                 } else {
                     View header = navigationView.getHeaderView(0);
-                    ImageView profPic = (ImageView) header.findViewById(R.id.header_imageView);
+                    final ImageView profPic = (ImageView) header.findViewById(R.id.header_imageView);
                     TextView name = (TextView) header.findViewById(R.id.header_name);
                     TextView email = (TextView) header.findViewById(R.id.header_email);
                     Glide.with(getApplicationContext())
                             .load(mUser.getPhotoUrl())
+                            .asBitmap()
                             .centerCrop()
                             .placeholder(R.drawable.ic_account_circle_black_24px)
-                            .into(profPic);
+                            .into(new BitmapImageViewTarget(profPic) {
+                        @Override
+                        protected void setResource(Bitmap resource) {
+                            RoundedBitmapDrawable circularBitmapDrawable =
+                                    RoundedBitmapDrawableFactory.create(getApplicationContext().getResources(), resource);
+                            circularBitmapDrawable.setCircular(true);
+                            profPic.setImageDrawable(circularBitmapDrawable);
+                        }
+                    });
                     name.setText(mUser.getDisplayName());
                     email.setText(mUser.getEmail());
                 }

@@ -6,17 +6,20 @@
         android:title="1"
         android:checked="true"
         android:icon="@drawable/ic_more_vert_black_24dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
         android:orderInCategory="500"/>
     <item
         android:id="@+id/menu_bttmnav_2"
         android:title="2"
         android:checked="true"
         android:icon="@drawable/ic_more_vert_black_24dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
         android:orderInCategory="1000"/>
     <item
         android:id="@+id/menu_bttmnav_3"
         android:title="3"
         android:checked="true"
         android:icon="@drawable/ic_more_vert_black_24dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
         android:orderInCategory="1500"/>
 </menu>
