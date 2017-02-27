@@ -27,14 +27,15 @@ import es.esy.vivekrajendran.newsapi.data.NewsContract;
 public class NewsCursorAdapter extends CursorAdapter {
 
     private Activity activity;
+
     public NewsCursorAdapter(Activity activity, Cursor c) {
-        super(activity, c, 0);
+        super(activity.getApplicationContext(), c, 0);
         this.activity = activity;
     }
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        return LayoutInflater.from(context).inflate(R.layout.item_news_heading, parent, false);
+        return LayoutInflater.from(context).inflate(R.layout.item_news_heading, parent, true);
     }
 
     @Override
@@ -44,9 +45,9 @@ public class NewsCursorAdapter extends CursorAdapter {
         TextView headline = (TextView) view.findViewById(R.id.tv_item_news_headline);
         TextView newsProviderName = (TextView) view.findViewById(R.id.tv_item_news_providername);
         TextView newsPublished = (TextView) view.findViewById(R.id.tv_item_news_timepublished);
-        final ImageButton addToFav = (ImageButton) view.findViewById(R.id.imgbtn_item_news_addtofav);
-        ImageButton share = (ImageButton) view.findViewById(R.id.imgbtn_item_news_share);
-        final ImageButton optionsMenu = (ImageButton) view.findViewById(R.id.imgbtn_item_news_optionsmenu);
+        final ImageView addToFav = (ImageView) view.findViewById(R.id.img_item_news_addtofav);
+        ImageView share = (ImageView) view.findViewById(R.id.img_item_news_share);
+        final ImageView optionsMenu = (ImageView) view.findViewById(R.id.img_item_news_optionsmenu);
 
         int columnNewsImage = cursor.getColumnIndexOrThrow(NewsContract.News.COLUMN_URL_TO_IMAGE);
         int columnHeadline = cursor.getColumnIndexOrThrow(NewsContract.News.COLUMN_TITLE);
@@ -102,7 +103,7 @@ public class NewsCursorAdapter extends CursorAdapter {
         popup.show();
     }
 
-    private class MyMenuItemClickListener implements PopupMenu.OnMenuItemClickListener {
+    public class MyMenuItemClickListener implements PopupMenu.OnMenuItemClickListener {
 
         MyMenuItemClickListener() {
         }

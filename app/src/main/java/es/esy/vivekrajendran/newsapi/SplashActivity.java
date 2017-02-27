@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
-import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -37,15 +36,17 @@ public class SplashActivity extends AppCompatActivity {
                     startActivity(intent);
                     SplashActivity.this.finish();
                 } else {
-                    startActivityForResult(
-                            AuthUI.getInstance()
-                            .createSignInIntentBuilder()
-                            .setProviders(
-                                    AuthUI.EMAIL_PROVIDER,
-                                    AuthUI.GOOGLE_PROVIDER)
-                            .setIsSmartLockEnabled(false)
-                            .build(),
-                            RC_SIGN_IN);
+//                    startActivityForResult(
+//                            AuthUI.getInstance()
+//                            .createSignInIntentBuilder()
+//                            .setProviders(
+//                                    AuthUI.EMAIL_PROVIDER,
+//                                    AuthUI.GOOGLE_PROVIDER)
+//                            .setIsSmartLockEnabled(false)
+//                            .build(),
+//                            RC_SIGN_IN);
+                    startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+                    SplashActivity.this.finish();
                 }
             }
         };

@@ -9,7 +9,6 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.ShareCompat;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v4.view.GravityCompat;
@@ -31,7 +30,7 @@ import es.esy.vivekrajendran.newsapi.dialogs.DevDialog;
 import es.esy.vivekrajendran.newsapi.fragments.ImageFragment;
 import es.esy.vivekrajendran.newsapi.fragments.LatestNewsFragment;
 import es.esy.vivekrajendran.newsapi.fragments.ProviderFragment;
-import es.esy.vivekrajendran.newsapi.network.NewsAsync;
+import es.esy.vivekrajendran.newsapi.fragments.VideoFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -58,7 +57,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.main_frame, new LatestNewsFragment())
+                .replace(R.id.main_frame, new ProviderFragment())
                 .commit();
     }
 
@@ -79,9 +78,11 @@ public class MainActivity extends AppCompatActivity
 
         switch (id) {
             case R.id.nav_gallery:
-                new NewsAsync(getApplicationContext()).execute(" https://newsapi.org/v1/articles?source=the-next-web&sortBy=latest&apiKey=a65e2431ef9141ab93e78509b14554d0");
+                //new NewsAsync(getApplicationContext()).execute(" https://newsapi.org/v1/articles?source=the-next-web&sortBy=latest&apiKey=a65e2431ef9141ab93e78509b14554d0");
+                startActivity(new Intent(MainActivity.this, GalleryActivity.class));
                 break;
             case R.id.nav_settings:
+                startActivity(new Intent(this, LoginActivity.class));
                 break;
             case R.id.nav_developer:
                 FragmentManager fragmentManager = getSupportFragmentManager();

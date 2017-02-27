@@ -1,36 +1,31 @@
 package es.esy.vivekrajendran.newsapi.fragments;
 
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.os.AsyncTask;
+import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
+import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.ArrayList;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import es.esy.vivekrajendran.newsapi.R;
-import es.esy.vivekrajendran.newsapi.data.UserPref;
-import es.esy.vivekrajendran.newsapi.model.ImageNews;
+import es.esy.vivekrajendran.newsapi.data.NewsContract;
+import es.esy.vivekrajendran.newsapi.network.NewsAsync;
 
-import static android.content.Context.CONNECTIVITY_SERVICE;
+public class ProviderFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-public class ProviderFragment extends Fragment {
-
-    private ProgressBar progressBar;
+    private ProviderAdapter providerAdapter;
 
     @Nullable
     @Override
@@ -41,68 +36,59 @@ public class ProviderFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        providerAdapter = new ProviderAdapter(getContext(), null);
+        GridView gridView = (GridView) view.findViewById(R.id.gv_providers_fragment);
+        gridView.setAdapter(providerAdapter);
+        new NewsAsync(getContext())
+                .execute("https://newsapi.org/v1/sources?apikey=6e661062a47d4eac83dc8a7ee0dcc96b", NewsAsync.PROVIDERS);
     }
 
-    private class DownloadTask extends AsyncTask<String, Void, Integer> {
-
-        @Override
-        protected void onPreExecute() {
-            progressBar.setVisibility(View.VISIBLE);
-        }
-
-        @Override
-        protected Integer doInBackground(String... params) {
-
-            Integer result = 0;
-            HttpURLConnection urlConnection;
-            try {
-                URL url = new URL(params[0]);
-                urlConnection = (HttpURLConnection) url.openConnection();
-                int statusCode = urlConnection.getResponseCode();
-
-                if (statusCode == 200) {
-                    BufferedReader r = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-                    StringBuilder response = new StringBuilder();
-                    String line;
-                    while ((line = r.readLine()) != null) {
-                        response.append(line);
-                    }
-                    UserPref.getInstance(getContext()).setJString(response.toString());
-                    parseResult(response.toString());
-                    result = 1;
-                } else {
-                    result = 0;
-                }
-            } catch (Exception e) {
-                Log.d("TAG", e.getLocalizedMessage());
-            }
-            return result;
-        }
-
-        private void parseResult(final String result) {
-            try {
-                JSONObject response = new JSONObject(result);
-                JSONArray posts = response.optJSONArray("posts");
-                for (int i = 0; i < posts.length(); i++) {
-                    JSONObject post = posts.optJSONObject(i);
-                    ImageNews item = new ImageNews();
-                    item.setTitle(post.optString("title"));
-                    item.setImageUrl(post.optString("thumbnail"));
-                }
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return new CursorLoader(
+                getContext(),
+                NewsContract.Provider.CONTENT_URI,
+                null,
+                null,
+                null,
+                null);
     }
 
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) getContext().getSystemService(CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        providerAdapter.swapCursor(data);
+    }
 
-        if (networkInfo == null) return false;
-        NetworkInfo.State networkState = networkInfo.getState();
-        return (networkState == NetworkInfo.State.CONNECTED || networkState == NetworkInfo.State.CONNECTING);
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        providerAdapter.swapCursor(null);
+    }
+
+    public class ProviderAdapter extends CursorAdapter {
+
+        public ProviderAdapter(Context context, Cursor c) {
+            super(context, c, 0);
+        }
+
+        @Override
+        public View newView(Context context, Cursor cursor, ViewGroup parent) {
+            return LayoutInflater.from(context).inflate(R.layout.item_provider, parent, true);
+        }
+
+        @Override
+        public void bindView(View view, Context context, Cursor cursor) {
+            ImageView imageView = (ImageView) view.findViewById(R.id.img_item_provider_image);
+            TextView title = (TextView) view.findViewById(R.id.tv_item_provider_name);
+
+            int columnImage = cursor.getColumnIndexOrThrow(NewsContract.Provider.COLUMN_URL_TO_IMAGE);
+            int columnName = cursor.getColumnIndexOrThrow(NewsContract.Provider.COLUMN_NAME);
+
+            Glide.with(context)
+                    .load(cursor.getString(columnImage))
+                    .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                    .centerCrop()
+                    .into(imageView);
+            title.setText(cursor.getString(columnName));
+        }
     }
 }

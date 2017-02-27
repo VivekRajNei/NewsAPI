@@ -1,44 +1,40 @@
 package es.esy.vivekrajendran.newsapi.fragments;
 
+import android.app.Activity;
+import android.content.Context;
+import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
+import android.support.v4.widget.CursorAdapter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
-import android.widget.Toast;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.ArrayList;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import es.esy.vivekrajendran.newsapi.R;
-import es.esy.vivekrajendran.newsapi.data.UserPref;
-import es.esy.vivekrajendran.newsapi.model.ImageNews;
-import es.esy.vivekrajendran.newsapi.util.ImagesRecyclerAdapter;
+import es.esy.vivekrajendran.newsapi.data.NewsContract;
+import es.esy.vivekrajendran.newsapi.network.NewsAsync;
 
 import static android.content.Context.CONNECTIVITY_SERVICE;
 
-public class ImageFragment extends Fragment {
+public class ImageFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
-    private ProgressBar progressBar;
-    private RecyclerView mRecyclerView;
-    private ImagesRecyclerAdapter imagesRecyclerAdapter;
-    private ArrayList<ImageNews> imageNewsArrayList;
-    private String url = "http://stacktips.com/?json=get_category_posts&slug=news&count=70";
+    private static final int IMAGE_LOADER = 10;
+    private ListView listView;
+    private ImageFragment.Adapter imageAdapter;
+    private String url = "https://pixabay.com/api/?key=4654053-f29f39f63a9a301a1ec7dae0d&q=nature";
 
     @Nullable
     @Override
@@ -49,98 +45,23 @@ public class ImageFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        progressBar = (ProgressBar) view.findViewById(R.id.pgbar_imagesfragment);
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.recy_imagesfragment);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecyclerView.setAdapter(imagesRecyclerAdapter);
+        listView = (ListView) view.findViewById(R.id.lv_frag_images);
+        imageAdapter = new ImageFragment.Adapter(getActivity(), null);
+        listView.setAdapter(imageAdapter);
         getData(url);
+        getLoaderManager().initLoader(IMAGE_LOADER, null, this);
     }
 
-
-    private class DownloadTask extends AsyncTask<String, Void, Integer> {
-
-        @Override
-        protected void onPreExecute() {
-            progressBar.setVisibility(View.VISIBLE);
-        }
-
-        @Override
-        protected Integer doInBackground(String... params) {
-
-            Integer result = 0;
-            HttpURLConnection urlConnection;
-            try {
-                URL url = new URL(params[0]);
-                urlConnection = (HttpURLConnection) url.openConnection();
-                int statusCode = urlConnection.getResponseCode();
-
-                if (statusCode == 200) {
-                    BufferedReader r = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-                    StringBuilder response = new StringBuilder();
-                    String line;
-                    while ((line = r.readLine()) != null) {
-                        response.append(line);
-                    }
-                    UserPref.getInstance(getContext()).setJString(response.toString());
-                    parseResult(response.toString());
-                    result = 1;
-                } else {
-                    result = 0;
-                }
-            } catch (Exception e) {
-                Log.d("TAG", e.getLocalizedMessage());
-            }
-            return result;
-        }
-
-        @Override
-        protected void onPostExecute(Integer result) {
-            setAdapter(result);
-        }
-
-    }
 
     public void getData(String url) {
-        if (UserPref.getInstance(getContext()).isJStringAvailable()) {
-            Log.i("TAG", "getData: Jstring available");
-            parseResult(UserPref.getInstance(getContext()).getJString());
-            setAdapter(1);
-        } else if (isNetworkAvailable()) {
-            new DownloadTask().execute(url);
-            Log.i("TAG", "getData: Network available");
+        if (isNetworkAvailable()) {
+            new NewsAsync(getContext())
+                    .execute(url, NewsAsync.IMAGES);
         } else {
             Log.i("TAG", "getData: Network unavailable");
         }
     }
 
-    private void parseResult(final String result) {
-        try {
-            JSONObject response = new JSONObject(result);
-            JSONArray posts = response.optJSONArray("posts");
-            imageNewsArrayList = new ArrayList<>();
-            for (int i = 0; i < posts.length(); i++) {
-                JSONObject post = posts.optJSONObject(i);
-                ImageNews item = new ImageNews();
-                item.setTitle(post.optString("title"));
-                item.setImageUrl(post.optString("thumbnail"));
-                imageNewsArrayList.add(item);
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void setAdapter(int result) {
-        progressBar.setVisibility(View.GONE);
-
-        if (result == 1) {
-            imagesRecyclerAdapter = new ImagesRecyclerAdapter(getContext(), imageNewsArrayList);
-            mRecyclerView.setAdapter(imagesRecyclerAdapter);
-        } else {
-            Toast.makeText(getContext(), "Failed to fetch data!", Toast.LENGTH_SHORT).show();
-        }
-    }
 
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getContext().getSystemService(CONNECTIVITY_SERVICE);
@@ -149,5 +70,60 @@ public class ImageFragment extends Fragment {
         if (networkInfo == null) return false;
         NetworkInfo.State networkState = networkInfo.getState();
         return (networkState == NetworkInfo.State.CONNECTED || networkState == NetworkInfo.State.CONNECTING);
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return new CursorLoader(
+                getContext(),
+                NewsContract.News.CONTENT_URI,
+                null,
+                null,
+                null,
+                null);
+
+
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        imageAdapter.swapCursor(data);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        imageAdapter.swapCursor(null);
+    }
+
+    public static class Adapter extends CursorAdapter {
+
+        public Activity activity;
+
+        public Adapter(Activity activity, Cursor c) {
+            super(activity.getApplicationContext(), c, 0);
+            this.activity = activity;
+        }
+
+        @Override
+        public View newView(Context context, Cursor cursor, ViewGroup parent) {
+            return LayoutInflater.from(context).inflate(R.layout.item_image, parent, false);
+        }
+
+        @Override
+        public void bindView(View view, Context context, Cursor cursor) {
+            ImageView imageView = (ImageView) view.findViewById(R.id.iv_item_image);
+            TextView textView = (TextView) view.findViewById(R.id.tv_item_image);
+
+            int columnURL = cursor.getColumnIndexOrThrow(NewsContract.Images.COLUMN_URL);
+            int columnLikes = cursor.getColumnIndexOrThrow(NewsContract.Images.COLUMN_LIKES);
+            int columnViews = cursor.getColumnIndexOrThrow(NewsContract.Images.COLUMN_VIEWS);
+
+            Glide.with(context)
+                    .load(cursor.getString(columnURL))
+                    .centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                    .into(imageView);
+            textView.setText(cursor.getString(columnViews));
+        }
     }
 }

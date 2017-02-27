@@ -1,9 +1,6 @@
 package es.esy.vivekrajendran.newsapi.fragments;
 
-import android.content.ContentUris;
-import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,13 +10,11 @@ import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import es.esy.vivekrajendran.newsapi.R;
-import es.esy.vivekrajendran.newsapi.WebviewActivity;
 import es.esy.vivekrajendran.newsapi.data.NewsContract;
+import es.esy.vivekrajendran.newsapi.network.NewsAsync;
 import es.esy.vivekrajendran.newsapi.util.NewsCursorAdapter;
 
 public class LatestNewsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -37,24 +32,14 @@ public class LatestNewsFragment extends Fragment implements LoaderManager.Loader
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        NewsAsync newsAsync = new NewsAsync(getContext());
+        newsAsync.execute("https://newsapi.org/v1/articles?source=the-next-web&sortBy=latest&apiKey=a65e2431ef9141ab93e78509b14554d0", NewsAsync.NEWS);
         ListView latestNewsListView = (ListView) view.findViewById(R.id.lv_frag_latest);
         View emptyView = view.findViewById(R.id.empty_view);
 
         latestNewsListView.setEmptyView(emptyView);
         newsCursorAdapter = new NewsCursorAdapter(getActivity(), null);
         latestNewsListView.setAdapter(newsCursorAdapter);
-
-        latestNewsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Uri contentUri = ContentUris.withAppendedId(NewsContract.URI_BASE, position);
-                Toast.makeText(getContext(), "Clicked item id: " + position + " uri : " + contentUri.toString(),
-                        Toast.LENGTH_SHORT).show();
-                /*Intent intent = new Intent(getContext(), WebviewActivity.class);
-                intent.setData(contentUri);
-                startActivity(intent);*/
-            }
-        });
         getLoaderManager().initLoader(LATEST_NEWS_LOADER, null, this);
     }
 

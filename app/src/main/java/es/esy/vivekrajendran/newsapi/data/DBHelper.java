@@ -15,11 +15,17 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(NewsContract.News.CREATE_TABLE);
+        db.execSQL(NewsContract.Video.CREATE_TABLE);
+        db.execSQL(NewsContract.Images.CREATE_TABLE);
+        db.execSQL(NewsContract.Provider.CREATE_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(NewsContract.News.DROP_TABLE);
+        db.execSQL(NewsContract.Video.DROP_TABLE);
+        db.execSQL(NewsContract.Images.DROP_TABLE);
+        db.execSQL(NewsContract.Provider.DROP_TABLE);
         onCreate(db);
     }
 

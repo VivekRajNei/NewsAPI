@@ -31,26 +31,12 @@ public class WebviewActivity extends AppCompatActivity {
                     activity.setTitle(R.string.app_name);
             }
         });
-        webView.setWebViewClient(new WebViewClient() {
-            @Override
-            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl)
-            {
-                // Handle the error
-            }
-
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url)
-            {
-                view.loadUrl(url);
-                return true;
-            }
-        });
 
         String url = getIntent().getStringExtra("url");
         if (url != null) {
             Log.i("TAG", "onCreate: " + url);
             webView.loadUrl(url);
-        }
+        } else Log.i("TAG", "onCreate: URL not found");
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
