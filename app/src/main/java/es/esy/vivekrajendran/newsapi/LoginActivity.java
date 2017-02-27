@@ -17,7 +17,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
+//import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -61,25 +61,25 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
 
-                FirebaseAuth.getInstance()
-                        .signInWithEmailAndPassword(email.getText().toString().trim(),
-                                password.getText().toString().trim())
-                        .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                            @Override
-                            public void onSuccess(AuthResult authResult) {
-                                mProgressbar.setVisibility(View.GONE);
-                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                                LoginActivity.this.finish();
-
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                mProgressbar.setVisibility(View.GONE);
-                                Toast.makeText(LoginActivity.this, "Login Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        });
+//                FirebaseAuth.getInstance()
+//                        .signInWithEmailAndPassword(email.getText().toString().trim(),
+//                                password.getText().toString().trim())
+//                        .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+//                            @Override
+//                            public void onSuccess(AuthResult authResult) {
+//                                mProgressbar.setVisibility(View.GONE);
+//                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+//                                LoginActivity.this.finish();
+//
+//                            }
+//                        })
+//                        .addOnFailureListener(new OnFailureListener() {
+//                            @Override
+//                            public void onFailure(@NonNull Exception e) {
+//                                mProgressbar.setVisibility(View.GONE);
+//                                Toast.makeText(LoginActivity.this, "Login Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
+//                            }
+//                        });
             }
         });
 

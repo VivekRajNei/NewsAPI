@@ -5,17 +5,17 @@ import android.net.Uri;
 
 public class NewsContract {
 
-    public static final String DB_NAME = "News.db";
-    public static final int DB_VERSION = 1;
+    static final String DB_NAME = "News.db";
+    static final int DB_VERSION = 1;
 
-    public static final String PATH_NEWS = "news";
-    public static final String PATH_PROVIDER = "provider";
-    public static final String PATH_IMAGE = "image";
-    public static final String PATH_VIDEO = "video";
+    static final String PATH_NEWS = "news";
+    static final String PATH_PROVIDER = "provider";
+    static final String PATH_IMAGE = "image";
+    static final String PATH_VIDEO = "video";
 
-    public static final String CONTENT_AUTHORITY = "es.esy.vivekrajendran.newsapi";
-    public static final String CONTENT_PROVIDER = "content://" + CONTENT_AUTHORITY;
-    public static final Uri URI_BASE = Uri.parse(CONTENT_PROVIDER);
+    static final String CONTENT_AUTHORITY = "es.esy.vivekrajendran.newsapi";
+    private static final String CONTENT_PROVIDER = "content://" + CONTENT_AUTHORITY;
+    private static final Uri URI_BASE = Uri.parse(CONTENT_PROVIDER);
 
     private NewsContract() {}
 
@@ -45,7 +45,7 @@ public class NewsContract {
         public static final String COLUMN_PUBLISHED_AT = "publishedAt";
         public static final String COLUMN_FAV = "favourite";
 
-        public static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
+        static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
                 COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_TITLE + " TEXT, " +
                 COLUMN_DESCRIPTION + " TEXT, " +
@@ -55,7 +55,7 @@ public class NewsContract {
                 COLUMN_PUBLISHED_AT + " TEXT," +
                 COLUMN_FAV + " INTEGER);";
 
-        public static final String DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
+        static final String DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
     }
 
     public static final class Provider {
@@ -77,7 +77,7 @@ public class NewsContract {
         public static final String COLUMN_URL_TO_IMAGE = "urlsToLogos";
         public static final String COLUMN_FAV = "favourite";
 
-        public static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
+        static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
                 COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_PROVIDER_ID + " TEXT, " +
                 COLUMN_NAME + " TEXT, " +
@@ -87,7 +87,7 @@ public class NewsContract {
                 COLUMN_DESCRIPTION + " TEXT," +
                 COLUMN_FAV + " INTEGER);";
 
-        public static final String DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
+        static final String DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
     }
 
     public static final class Images {
@@ -105,13 +105,13 @@ public class NewsContract {
         public static final String COLUMN_LIKES = "likes";
         public static final String COLUMN_VIEWS = "views";
 
-        public static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
+        static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
                 COLUMN_ID + " INTEGER, " +
                 COLUMN_LIKES + " TEXT, " +
                 COLUMN_URL + " TEXT, " +
                 COLUMN_VIEWS + " TEXT); ";
 
-        public static final String DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
+        static final String DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
     }
 
     public static final class Video {
@@ -130,12 +130,12 @@ public class NewsContract {
         public static final String COLUMN_VIEWS = "views";
         public static final String COLUMN_URL = "url";
 
-        public static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
+        static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
                 COLUMN_ID + " INTEGER, " +
                 COLUMN_LIKES + " INTEGER, " +
                 COLUMN_URL + " INTEGER, " +
                 COLUMN_VIEWS + " TEXT NOT NULL );";
 
-        public static final String DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
+        static final String DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
     }
 }

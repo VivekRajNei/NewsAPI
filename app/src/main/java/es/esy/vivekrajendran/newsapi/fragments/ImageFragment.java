@@ -3,8 +3,6 @@ package es.esy.vivekrajendran.newsapi.fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -25,16 +23,14 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import es.esy.vivekrajendran.newsapi.R;
 import es.esy.vivekrajendran.newsapi.data.NewsContract;
+import es.esy.vivekrajendran.newsapi.data.UserPref;
 import es.esy.vivekrajendran.newsapi.network.NewsAsync;
-
-import static android.content.Context.CONNECTIVITY_SERVICE;
+import es.esy.vivekrajendran.newsapi.util.NetworkChecker;
 
 public class ImageFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
     private static final int IMAGE_LOADER = 10;
-    private ListView listView;
     private ImageFragment.Adapter imageAdapter;
-    private String url = "https://pixabay.com/api/?key=4654053-f29f39f63a9a301a1ec7dae0d&q=nature";
 
     @Nullable
     @Override
@@ -45,31 +41,25 @@ public class ImageFragment extends Fragment implements LoaderManager.LoaderCallb
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        listView = (ListView) view.findViewById(R.id.lv_frag_images);
+        ListView listView = (ListView) view.findViewById(R.id.lv_frag_images);
         imageAdapter = new ImageFragment.Adapter(getActivity(), null);
         listView.setAdapter(imageAdapter);
+        String url = "https://pixabay.com/api/?key=4654053-f29f39f63a9a301a1ec7dae0d&q=nature";
         getData(url);
         getLoaderManager().initLoader(IMAGE_LOADER, null, this);
     }
 
 
     public void getData(String url) {
-        if (isNetworkAvailable()) {
+        if (NetworkChecker.getInstance(getContext()).isNetworkAvailable()
+                && UserPref.getInstance(getContext()).isImageFetchable()) {
             new NewsAsync(getContext())
                     .execute(url, NewsAsync.IMAGES);
         } else {
-            Log.i("TAG", "getData: Network unavailable");
+            Log.i("TAG", "getData: Network unavailable: "
+                    + "Fetchable " + UserPref.getInstance(getContext()).isImageFetchable()
+                    + ": NetworkStatus " + NetworkChecker.getInstance(getContext()).isNetworkAvailable());
         }
-    }
-
-
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) getContext().getSystemService(CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-
-        if (networkInfo == null) return false;
-        NetworkInfo.State networkState = networkInfo.getState();
-        return (networkState == NetworkInfo.State.CONNECTED || networkState == NetworkInfo.State.CONNECTING);
     }
 
     @Override
@@ -95,13 +85,10 @@ public class ImageFragment extends Fragment implements LoaderManager.LoaderCallb
         imageAdapter.swapCursor(null);
     }
 
-    public static class Adapter extends CursorAdapter {
+    private static class Adapter extends CursorAdapter {
 
-        public Activity activity;
-
-        public Adapter(Activity activity, Cursor c) {
+        Adapter(Activity activity, Cursor c) {
             super(activity.getApplicationContext(), c, 0);
-            this.activity = activity;
         }
 
         @Override

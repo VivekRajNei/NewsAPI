@@ -9,6 +9,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +22,9 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import es.esy.vivekrajendran.newsapi.R;
 import es.esy.vivekrajendran.newsapi.data.NewsContract;
+import es.esy.vivekrajendran.newsapi.data.UserPref;
 import es.esy.vivekrajendran.newsapi.network.NewsAsync;
+import es.esy.vivekrajendran.newsapi.util.NetworkChecker;
 
 public class ProviderFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -36,11 +39,25 @@ public class ProviderFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        String url = "https://newsapi.org/v1/sources?apikey=6e661062a47d4eac83dc8a7ee0dcc96b";
+        getData(url);
         providerAdapter = new ProviderAdapter(getContext(), null);
         GridView gridView = (GridView) view.findViewById(R.id.gv_providers_fragment);
         gridView.setAdapter(providerAdapter);
-        new NewsAsync(getContext())
-                .execute("https://newsapi.org/v1/sources?apikey=6e661062a47d4eac83dc8a7ee0dcc96b", NewsAsync.PROVIDERS);
+
+    }
+
+    public void getData(String url) {
+        if (NetworkChecker.getInstance(getContext()).isNetworkAvailable()
+                && UserPref.getInstance(getContext()).isImageFetchable()) {
+            new NewsAsync(getContext())
+                    .execute(url, NewsAsync.PROVIDERS);
+        } else {
+            Log.i("TAG", "getData: Network unavailable: "
+                   + "Fetchable " + UserPref.getInstance(getContext()).isProvidersFetchable()
+            + ": NetworkStatus " + NetworkChecker.getInstance(getContext()).isNetworkAvailable());
+        }
     }
 
     @Override
@@ -64,9 +81,9 @@ public class ProviderFragment extends Fragment implements LoaderManager.LoaderCa
         providerAdapter.swapCursor(null);
     }
 
-    public class ProviderAdapter extends CursorAdapter {
+    private class ProviderAdapter extends CursorAdapter {
 
-        public ProviderAdapter(Context context, Cursor c) {
+        ProviderAdapter(Context context, Cursor c) {
             super(context, c, 0);
         }
 

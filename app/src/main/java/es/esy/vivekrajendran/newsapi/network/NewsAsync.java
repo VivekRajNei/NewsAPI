@@ -9,14 +9,16 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import es.esy.vivekrajendran.newsapi.data.UserPref;
 
-public class NewsAsync extends AsyncTask<String, Void, Boolean> {
+
+public class NewsAsync extends AsyncTask<String, Void, String> {
 
     public static final String TAG = "TAG";
     public static final String NEWS = "news";
     public static final String PROVIDERS = "providers";
     public static final String IMAGES = "images";
-    public static final String PHOTO = "photo";
+    public static final String VIDEO = "video";
     private Context context;
 
     public NewsAsync(Context context) {
@@ -29,10 +31,10 @@ public class NewsAsync extends AsyncTask<String, Void, Boolean> {
     }
 
     @Override
-    protected Boolean doInBackground(String... params) {
+    protected String doInBackground(String... params) {
         String jsonString = doNetworkOperation(params[0]);
         doParse(jsonString ,params);
-        return true;
+        return params[1];
     }
 
     private void doParse(String json, String[] param) {
@@ -50,7 +52,7 @@ public class NewsAsync extends AsyncTask<String, Void, Boolean> {
                 new MultimediaParser.ImageParser(context)
                         .resolveImage(json);
                 break;
-            case PHOTO:
+            case VIDEO:
                 new MultimediaParser.VideoParser(context)
                         .resolveVideo(json);
                 break;
@@ -60,8 +62,23 @@ public class NewsAsync extends AsyncTask<String, Void, Boolean> {
     }
 
     @Override
-    protected void onPostExecute(Boolean aBoolean) {
-        super.onPostExecute(aBoolean);
+    protected void onPostExecute(String string) {
+        switch (string) {
+            case NEWS:
+                UserPref.getInstance(context).setNewsTime();
+                break;
+            case PROVIDERS:
+                UserPref.getInstance(context).setProviderTime();
+                break;
+            case IMAGES:
+                UserPref.getInstance(context).setImageTime();
+                break;
+            case VIDEO:
+                UserPref.getInstance(context).setVideoTime();
+                break;
+            default:
+                throw new IllegalArgumentException("OnPostExecute: String mismatch found");
+        }
     }
 
     private String doNetworkOperation(String params) {

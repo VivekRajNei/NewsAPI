@@ -5,19 +5,20 @@ import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 public class UserPref {
 
-    private Context context;
     private SharedPreferences jsonSharedPreferences;
     private SharedPreferences dbSharedPrefernces;
 
     private UserPref(Context context) {
-        this.context = context;
         dbSharedPrefernces = context.getSharedPreferences(PrefContract.DbTime.PREF_NAME, Context.MODE_PRIVATE);
         jsonSharedPreferences = context.getSharedPreferences(PrefContract.Json.PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = dbSharedPrefernces.edit();
+        editor.putLong(PrefContract.DbTime.NEWS, 0);
+        editor.putLong(PrefContract.DbTime.PROVIDERS, 0);
+        editor.putLong(PrefContract.DbTime.IMAGE, 0);
+        editor.putLong(PrefContract.DbTime.VIDEO, 0);
+        editor.apply();
     }
 
     public static UserPref getInstance(@NonNull Context context) {
@@ -25,41 +26,44 @@ public class UserPref {
     }
 
     public boolean isJStringAvailable() {
-        //returns TRUE if JString is not null
         boolean availbilty = jsonSharedPreferences.getString(PrefContract.Json.JSTRING, null) != null;
         Log.i("TAG", "isJStringAvailable: " + availbilty);
         return availbilty;
     }
 
     public boolean isImageFetchable() {
-        return (getCurrentTime() - getImage()) > 86400;
+        Log.i("TAG", "isProvidersFetchable: " + getCurrentTime() + " " +
+                getImageTime() + ((getCurrentTime() - getImageTime()) > 43200));
+        return ((getCurrentTime() - getImageTime()) < 43200);
     }
 
     public boolean isVideoFetchable() {
-        return (getCurrentTime() - getVideo()) > 86400;
+        return ((getCurrentTime() - getVideoTime()) < 43200);
     }
 
     public boolean isNewsFetchable() {
-        return (getCurrentTime() - getNews()) > 86400;
+        return ((getCurrentTime() - getNewsTime()) < 43200);
     }
 
     public boolean isProvidersFetchable() {
-        return (getCurrentTime() - getProviders()) > 86400;
+        Log.i("TAG", "isProvidersFetchable: " + getCurrentTime() + " " +
+                getProvidersTime() + ((getCurrentTime() - getProvidersTime()) > 43200));
+        return ((getCurrentTime() - getProvidersTime()) < 43200);
     }
 
-    private long getImage() {
+    private long getImageTime() {
         return jsonSharedPreferences.getLong(PrefContract.DbTime.IMAGE, getCurrentTime());
     }
 
-    private long getVideo() {
+    private long getVideoTime() {
         return jsonSharedPreferences.getLong(PrefContract.DbTime.VIDEO, getCurrentTime());
     }
 
-    private long getNews() {
+    private long getNewsTime() {
         return jsonSharedPreferences.getLong(PrefContract.DbTime.NEWS, getCurrentTime());
     }
 
-    private long getProviders() {
+    private long getProvidersTime() {
         return jsonSharedPreferences.getLong(PrefContract.DbTime.PROVIDERS, getCurrentTime());
     }
 
@@ -89,20 +93,5 @@ public class UserPref {
 
     private long getCurrentTime() {
         return System.currentTimeMillis()/1000;
-    }
-
-    /**
-     * Jstring portion
-     * @return
-     */
-
-    public String getJString() {
-        return jsonSharedPreferences.getString(PrefContract.Json.JSTRING, null);
-    }
-
-    public void setJString(String jString) {
-        SharedPreferences.Editor editor = jsonSharedPreferences.edit();
-        editor.putString(PrefContract.Json.JSTRING, jString);
-        editor.apply();
     }
 }

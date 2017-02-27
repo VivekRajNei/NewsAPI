@@ -17,7 +17,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
+//import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -64,24 +64,24 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (verifyName() && verifyEmail() && verifyPassword()) {
-                    FirebaseAuth.getInstance()
-                            .createUserWithEmailAndPassword(
-                                    name.getText().toString().trim(),
-                                    password.getText().toString().trim())
-                            .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                                @Override
-                                public void onSuccess(AuthResult authResult) {
-                                    Toast.makeText(RegisterActivity.this, "Registered Successfully " + authResult.getUser().getEmail(), Toast.LENGTH_SHORT).show();
-                                    onBackPressed();
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(RegisterActivity.this, "Failed to register " + e.getMessage()
-                                            , Toast.LENGTH_SHORT).show();
-                                }
-                            });
+//                    FirebaseAuth.getInstance()
+//                            .createUserWithEmailAndPassword(
+//                                    name.getText().toString().trim(),
+//                                    password.getText().toString().trim())
+//                            .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+//                                @Override
+//                                public void onSuccess(AuthResult authResult) {
+//                                    Toast.makeText(RegisterActivity.this, "Registered Successfully " + authResult.getUser().getEmail(), Toast.LENGTH_SHORT).show();
+//                                    onBackPressed();
+//                                }
+//                            })
+//                            .addOnFailureListener(new OnFailureListener() {
+//                                @Override
+//                                public void onFailure(@NonNull Exception e) {
+//                                    Toast.makeText(RegisterActivity.this, "Failed to register " + e.getMessage()
+//                                            , Toast.LENGTH_SHORT).show();
+//                                }
+//                            });
                 } else {
                     Snackbar.make(coordinatorLayout, "Unable to register", Snackbar.LENGTH_SHORT)
                             .show();

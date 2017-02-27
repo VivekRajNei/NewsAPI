@@ -1,14 +1,11 @@
 package es.esy.vivekrajendran.newsapi;
 
 import android.app.Activity;
-import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.webkit.WebChromeClient;
-import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 
 public class WebviewActivity extends AppCompatActivity {
 

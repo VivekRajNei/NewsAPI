@@ -23,20 +23,19 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
-import com.google.firebase.auth.FirebaseAuth;
+//import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import es.esy.vivekrajendran.newsapi.dialogs.DevDialog;
 import es.esy.vivekrajendran.newsapi.fragments.ImageFragment;
 import es.esy.vivekrajendran.newsapi.fragments.LatestNewsFragment;
 import es.esy.vivekrajendran.newsapi.fragments.ProviderFragment;
-import es.esy.vivekrajendran.newsapi.fragments.VideoFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private FirebaseAuth mFirebaseAuth;
-    private FirebaseAuth.AuthStateListener mAuthStateListener;
+//    private FirebaseAuth mFirebaseAuth;
+//    private FirebaseAuth.AuthStateListener mAuthStateListener;
     private NavigationView navigationView;
 
     @Override
@@ -46,7 +45,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
 
-        initListener();
+        //initListener();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -57,7 +56,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.main_frame, new ProviderFragment())
+                .replace(R.id.main_frame, new LatestNewsFragment())
                 .commit();
     }
 
@@ -103,7 +102,7 @@ public class MainActivity extends AppCompatActivity
                 startActivity(Intent.createChooser(feedbackIntent, "Send feedback with"));
                 break;
             case R.id.nav_logout:
-                mFirebaseAuth.signOut();
+//                mFirebaseAuth.signOut();
                 break;
         }
 
@@ -112,61 +111,61 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    private void initListener() {
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser mUser = firebaseAuth.getCurrentUser();
-                if (mUser == null) {
-                    Intent intent = new Intent(MainActivity.this, SplashActivity.class);
-                    intent.putExtra("show_image", true);
-                    startActivity(intent);
-                } else {
-                    View header = navigationView.getHeaderView(0);
-                    final ImageView profPic = (ImageView) header.findViewById(R.id.header_imageView);
-                    TextView name = (TextView) header.findViewById(R.id.header_name);
-                    TextView email = (TextView) header.findViewById(R.id.header_email);
-                    Glide.with(getApplicationContext())
-                            .load(mUser.getPhotoUrl())
-                            .asBitmap()
-                            .centerCrop()
-                            .placeholder(R.drawable.ic_account_circle_black_24px)
-                            .into(new BitmapImageViewTarget(profPic) {
-                                @Override
-                                protected void setResource(Bitmap resource) {
-                                    RoundedBitmapDrawable circularBitmapDrawable =
-                                            RoundedBitmapDrawableFactory.create(getApplicationContext().getResources(), resource);
-                                    circularBitmapDrawable.setCircular(true);
-                                    profPic.setImageDrawable(circularBitmapDrawable);
-                                }
-                            });
-                    name.setText(mUser.getDisplayName());
-                    email.setText(mUser.getEmail());
-                }
-            }
-        };
-
-        BottomNavigationView mBottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
-        mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                changeFrag(item.getItemId());
-                return true;
-            }
-        });
-    }
+//    private void initListener() {
+//        mFirebaseAuth = FirebaseAuth.getInstance();
+//        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
+//            @Override
+//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+//                FirebaseUser mUser = firebaseAuth.getCurrentUser();
+//                if (mUser == null) {
+//                    Intent intent = new Intent(MainActivity.this, SplashActivity.class);
+//                    intent.putExtra("show_image", true);
+//                    startActivity(intent);
+//                } else {
+//                    View header = navigationView.getHeaderView(0);
+//                    final ImageView profPic = (ImageView) header.findViewById(R.id.header_imageView);
+//                    TextView name = (TextView) header.findViewById(R.id.header_name);
+//                    TextView email = (TextView) header.findViewById(R.id.header_email);
+//                    Glide.with(getApplicationContext())
+//                            .load(mUser.getPhotoUrl())
+//                            .asBitmap()
+//                            .centerCrop()
+//                            .placeholder(R.drawable.ic_account_circle_black_24px)
+//                            .into(new BitmapImageViewTarget(profPic) {
+//                                @Override
+//                                protected void setResource(Bitmap resource) {
+//                                    RoundedBitmapDrawable circularBitmapDrawable =
+//                                            RoundedBitmapDrawableFactory.create(getApplicationContext().getResources(), resource);
+//                                    circularBitmapDrawable.setCircular(true);
+//                                    profPic.setImageDrawable(circularBitmapDrawable);
+//                                }
+//                            });
+//                    name.setText(mUser.getDisplayName());
+//                    email.setText(mUser.getEmail());
+//                }
+//            }
+////        };
+//
+//        BottomNavigationView mBottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+//        mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+//            @Override
+//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+//                changeFrag(item.getItemId());
+//                return true;
+//            }
+//        });
+//    }
 
     @Override
     protected void onStart() {
         super.onStart();
-        mFirebaseAuth.addAuthStateListener(mAuthStateListener);
+        //mFirebaseAuth.addAuthStateListener(mAuthStateListener);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
+        //mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
     }
 
     private void changeFrag(int id) {

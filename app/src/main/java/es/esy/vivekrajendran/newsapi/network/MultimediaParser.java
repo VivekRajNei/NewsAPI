@@ -13,17 +13,17 @@ import org.json.JSONObject;
 import es.esy.vivekrajendran.newsapi.data.NewsContract;
 
 
-public class MultimediaParser {
-    public static class ImageParser {
+class MultimediaParser {
+    static class ImageParser {
         private Context context;
         public static final String TAG = "TAG";
 
 
-        public ImageParser(Context context) {
+        ImageParser(Context context) {
             this.context = context;
         }
 
-        public Boolean resolveImage(String json) {
+        Boolean resolveImage(String json) {
             try {
                 JSONObject rootElement = new JSONObject(json);
                 JSONArray sources = rootElement.getJSONArray("hits");
@@ -54,16 +54,16 @@ public class MultimediaParser {
         }
     }
 
-    public static class VideoParser {
+    static class VideoParser {
         private Context context;
         public static final String TAG = "TAG";
 
 
-        public VideoParser(Context context) {
+        VideoParser(Context context) {
             this.context = context;
         }
 
-        public Boolean resolveVideo(String json) {
+        Boolean resolveVideo(String json) {
             try {
                 JSONObject rootElement = new JSONObject(json);
                 JSONArray sources = rootElement.getJSONArray("hits");

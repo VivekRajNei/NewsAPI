@@ -12,18 +12,18 @@ import org.json.JSONObject;
 
 import es.esy.vivekrajendran.newsapi.data.NewsContract;
 
-public class NewsParser {
+class NewsParser {
 
-    public static class LatestNewsParser {
+    static class LatestNewsParser {
         private Context context;
         public static final String TAG = "TAG";
 
 
-        public LatestNewsParser(Context context) {
+        LatestNewsParser(Context context) {
             this.context = context;
         }
 
-        public Boolean resolveJSON(String json) {
+        Boolean resolveJSON(String json) {
             try {
                 JSONObject rootElement = new JSONObject(json);
                 //if (!("ok".equals(rootElement.getString("status")))) {   }
@@ -57,16 +57,16 @@ public class NewsParser {
         }
     }
 
-    public static class ProviderParser {
+    static class ProviderParser {
         private Context context;
-        public static final String TAG = "TAG";
+        private static final String TAG = "TAG";
 
 
-        public ProviderParser(Context context) {
+        ProviderParser(Context context) {
             this.context = context;
         }
 
-        public Boolean resolveJSON(String json) {
+        Boolean resolveJSON(String json) {
             try {
                 JSONObject rootElement = new JSONObject(json);
                 JSONArray sources = rootElement.getJSONArray("sources");
